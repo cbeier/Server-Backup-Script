@@ -40,7 +40,7 @@ tar cjfp logs-$DATE.tar.bz2 log
 tar cjfp mysql-$DATE.tar.bz2 mysql
 
 # Alle komprimierten Dateien per FTP auf den Backup-Server laden
-ftp -u ftp://$FTP_USER:$FTP_PASS@$FTP_SERVER *$DATE*
+ftp -u ftp://$FTP_USER:$FTP_PASS@$FTP_SERVER send *$DATE*
 
 # Anschließend alle auf den Server angelegten Dateien wieder löschen
 rm -r -f /backup
