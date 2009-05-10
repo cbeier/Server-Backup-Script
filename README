@@ -1,6 +1,11 @@
 ReadMe fuer backup.sh
 ---------------------
 
+SYSTEMVORAUSSETZUNGEN
+Folgende Pakete werden vom Script benoetigt und muessen installiert sein:
+  * rsync
+  * mysql (wenn Datenbanken gesichert werden sollen)
+
 INSTALLATION
 1.) Script hochladen und ggf. die Angaben im Script an die Beduerfnisse anpassen
 2.) Script aufrufen, evtl. mittels Cronjob regelmaessig starten lassen
