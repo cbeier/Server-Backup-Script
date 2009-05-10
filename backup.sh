@@ -1,32 +1,33 @@
-#!/bin/bash # Titel: Backup-Script 
+#!/bin/bash
+
+# Titel: Backup-Script 
 # Description: Sicherung von /srv, /etc, /var/log und MYSQL-Datenbanken anlegen und automatisch auf einen festgelegten FTP-Server hochladen. 
 # Copyright: Christian Beier (http://www.beier-christian.eu/) 
 # Version 1.1
 
 
 # Allgemeine Angaben
-
-MYSQL_USER=[Benutzername für MySQL, meistens root]
-MYSQL_PASS=[Passwort für MySQL]
-FTP_SERVER=[Adresse des FTP-Servers auf dem gesichert werden soll - Strato: backup.serverkompetenz.de]
-FTP_USER=[Benutzername]
-FTP_PASS=[Passwort]
+MYSQL_USER=Benutzername_fuer_MySQL_meistens_root
+MYSQL_PASS=Passwort_fuer_MySQL
+FTP_SERVER=Adresse_des_FTP-Servers_auf_dem_gesichert_werden_soll # Bsp. Strato: backup.serverkompetenz.de
+FTP_USER=Benutzername
+FTP_PASS=Passwort
 
 # Festlegung des Datums - Format: 20050710
 DATE=`date +"%Y%m%d"`
 
-# Das Script
+# ENDE DER EINSTELLUNGEN
 
 # Backup-Verzeichnis anlegen 
-mkdir /backup
-mkdir /backup/mysql
+mkdir /tmp/backup
+mkdir /tmp/backup/mysql
 
 # Verzeichnisse die ins Backup integriert werden sollen 
-rsync -az --delete --delete-after /srv /backup
-rsync -az --delete --delete-after /etc /backup
-rsync -az --delete --delete-after /var/log /backup
+rsync -az --delete --delete-after /srv /tmp/backup
+rsync -az --delete --delete-after /etc /tmp/backup
+rsync -az --delete --delete-after /var/log /tmp/backup
 
-cd /backup/mysql
+cd /tmp/backup/mysql
 
 # Sicherung der Datenbanken
 mysqldump -AaCceQ -u$MYSQL_USER -p$MYSQL_PASS -r mysql.dbs
@@ -42,5 +43,5 @@ tar cjfp mysql-$DATE.tar.bz2 mysql
 # Alle komprimierten Dateien per FTP auf den Backup-Server laden
 ftp -u ftp://$FTP_USER:$FTP_PASS@$FTP_SERVER send *$DATE*
 
-# Anschließend alle auf den Server angelegten Dateien wieder löschen
-rm -r -f /backup
+# Anschliessend alle auf den Server angelegten Dateien wieder loeschen
+rm -r -f /tmp/backup
