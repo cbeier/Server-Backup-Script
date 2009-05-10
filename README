@@ -1,0 +1,16 @@
+ReadMe fuer backup.sh
+---------------------
+
+INSTALLATION
+1.) Script hochladen und ggf. die Angaben im Script an die Beduerfnisse anpassen
+2.) Script aufrufen, evtl. mittels Cronjob regelmaessig starten lassen
+
+Beispiel fuer einen CronJob:
+Die folgende Zeile startet das Backup-Script jeden Morgen um 3.00 Uhr:
+
+00 3 *** root /root/bin/backup.sh
+
+
+Viel Spass bei der Benutzung.
+
+Fragen? -> www.beier-christian.eu
