@@ -22,10 +22,10 @@ DATE=`date +"%Y%m%d"`
 mkdir /tmp/backup
 mkdir /tmp/backup/mysql
 
-# Verzeichnisse die ins Backup integriert werden sollen 
-rsync -az --delete --delete-after /srv /tmp/backup
-rsync -az --delete --delete-after /etc /tmp/backup
-rsync -az --delete --delete-after /var/log /tmp/backup
+# Verzeichnisse die ins Backup integriert werden sollen
+cp -r /srv /tmp/backup
+cp -r /etc /tmp/backup
+cp -r /var/log /tmp/backup
 
 cd /tmp/backup/mysql
 
@@ -41,7 +41,13 @@ tar cjfp logs-$DATE.tar.bz2 log
 tar cjfp mysql-$DATE.tar.bz2 mysql
 
 # Alle komprimierten Dateien per FTP auf den Backup-Server laden
-ftp -u ftp://$FTP_USER:$FTP_PASS@$FTP_SERVER send *$DATE*
+ftp -ni << END_UPLOAD
+  open $FTP_SERVER
+  user $FTP_USER $FTP_PASS
+  bin
+  mput *.tar.bz2
+  quit
+END_UPLOAD
 
 # Anschliessend alle auf den Server angelegten Dateien wieder loeschen
 rm -r -f /tmp/backup
